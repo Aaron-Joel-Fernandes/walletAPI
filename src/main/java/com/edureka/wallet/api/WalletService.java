@@ -10,4 +10,7 @@ public interface WalletService {
 
 	WalletDto getBalance(String emailId);
 
+	WalletDto addWallet(WalletDto walletDto);
+	WalletDto updateWallet(String id, WalletDto walletDto);
+
 }
