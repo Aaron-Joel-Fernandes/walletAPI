@@ -38,6 +38,17 @@ public class PaymentTransactionDto implements Serializable {
 
 	private Float amount;
 
+	private WalletDto walletDto;
+
+
+	public WalletDto getWalletDto() {
+		return walletDto;
+	}
+
+	public void setWalletDto(WalletDto walletDto) {
+		this.walletDto = walletDto;
+	}
+
 	public Long getOrderId() {
 		return orderId;
 	}
