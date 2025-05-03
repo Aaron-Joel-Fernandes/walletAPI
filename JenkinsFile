@@ -43,7 +43,7 @@ pipeline {
                 expression { BRANCH_NAME.startsWith("feature/addLogging") }
             }
             steps {
-                 sshagent (credentials: [env.GIT_CREDENTIALS_ID]) {
+                 ssh agent (credentials: [env.GIT_CREDENTIALS_ID]) {
                     bat """
                     git config --global user.email "fernandes.aaron1@gmail.com"
                     git config --global user.name "Aaron Joel Fernandes"
