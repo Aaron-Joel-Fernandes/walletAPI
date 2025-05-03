@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/edureka-devops/walletAPI.git', branch: 'feature/add-wallet'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running Unit Tests...'
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploying to DEV environment"
+            }
+        }
+    }
