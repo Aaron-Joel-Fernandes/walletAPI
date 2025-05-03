@@ -1,27 +1,141 @@
 pipeline {
     agent any
+
+    environment {
+        BRANCH_NAME = "${env.GIT_BRANCH ?: sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/edureka-devops/walletAPI.git', branch: 'feature/add-wallet'
+                checkout scm
             }
         }
-        stage('Build') {
+
+        stage('Build & Test') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/") }
+            }
             steps {
-                echo 'Building...'
+                echo "Running tests on branch ${BRANCH_NAME}"
                 sh 'mvn clean install'
             }
         }
-        stage('Test') {
+
+        stage('Deploy to Dev') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/") }
+            }
             steps {
-                echo 'Running Unit Tests...'
-                sh 'mvn test'
+                echo "Deploying ${BRANCH_NAME} to DEV environment"
+                // Simulate deployment
+                sh './deploy.sh dev'  // Replace with your actual deployment command
             }
         }
-        stage('Deploy') {
+
+        stage('Merge to Release') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/") }
+            }
             steps {
-                echo "Deploying to DEV environment"
+                script {
+                    sh """
+
+
+                    git checkout release
+                    git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
+                    git push origin release
+
+                    git push origin --delete ${BRANCH_NAME}
+                    """
+                }
+            }
+        }
+
+        stage('Merge Release to Master') {
+            when {
+                expression { BRANCH_NAME == 'release' }
+            }
+            steps {
+                script {
+                    sh """
+                    git checkout master
+                    git merge --no-ff release -m "Release to master"
+                    git push origin master
+                    """
+                }
             }
         }
     }
+}
+pipeline {
+    agent any
+
+    environment {
+        BRANCH_NAME = "${env.GIT_BRANCH ?: sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()}"
     }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build & Test') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/") }
+            }
+            steps {
+                echo "Running tests on branch ${BRANCH_NAME}"
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Deploy to Dev') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/") }
+            }
+            steps {
+                echo "Deploying ${BRANCH_NAME} to DEV environment"
+                // Simulate deployment
+                sh './deploy.sh dev'  // Replace with your actual deployment command
+            }
+        }
+
+        stage('Merge to Release') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/") }
+            }
+            steps {
+                script {
+                    sh """
+                    git config user.email "jenkins@ci.com"
+                    git config user.name "Jenkins CI"
+
+                    git checkout release
+                    git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
+                    git push origin release
+
+                    git push origin --delete ${BRANCH_NAME}
+                    """
+                }
+            }
+        }
+
+        stage('Merge Release to Master') {
+            when {
+                expression { BRANCH_NAME == 'release' }
+            }
+            steps {
+                script {
+                    sh """
+                    git checkout master
+                    git merge --no-ff release -m "Release to master"
+                    git push origin master
+                    """
+                }
+            }
+        }
+    }
+}
