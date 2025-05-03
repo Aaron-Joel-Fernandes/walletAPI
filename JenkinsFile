@@ -43,7 +43,7 @@ pipeline {
                 expression { BRANCH_NAME.startsWith("feature/addLogging") }
             }
             steps {
-                 withCredentials([usernamePassword(credentialsId: 'git credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                 withCredentials([usernamePassword(credentialsId: 'git', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     bat """
                     git config --global user.email "fernandes.aaron1@gmail.com"
                     git config --global user.name "Aaron Joel Fernandes"
