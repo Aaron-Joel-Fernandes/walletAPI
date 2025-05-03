@@ -47,7 +47,7 @@ pipeline {
                     bat """
                     git config --global user.email "fernandes.aaron1@gmail.com"
                     git config --global user.name "Aaron Joel Fernandes"
-                    git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/your-user/walletAPI.git
+                    git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/Aaron-Joel-Fernandes/walletAPI.git
 
                     git checkout release/1.0.0
                     git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
