@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        BRANCH_NAME = "${env.GIT_BRANCH ?: sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()}"
+        BRANCH_NAME = "feature/"
     }
 
     stages {
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 echo "Deploying ${BRANCH_NAME} to DEV environment"
                 // Simulate deployment
-                sh './deploy.sh dev'  // Replace with your actual deployment command
+                //sh './deploy.sh dev'  // Replace with your actual deployment command
             }
         }
 
@@ -42,9 +42,9 @@ pipeline {
                     sh """
 
 
-                    git checkout release
+                    git checkout release/1.0.0
                     git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
-                    git push origin release
+                    git push origin release/1.0.0
 
                     git push origin --delete ${BRANCH_NAME}
                     """
@@ -54,13 +54,13 @@ pipeline {
 
         stage('Merge Release to Master') {
             when {
-                expression { BRANCH_NAME == 'release' }
+                expression { BRANCH_NAME == 'release/1.0.0' }
             }
             steps {
                 script {
                     sh """
                     git checkout master
-                    git merge --no-ff release -m "Release to master"
+                    git merge --no-ff release/1.0.0 -m "Release to master"
                     git push origin master
                     """
                 }
