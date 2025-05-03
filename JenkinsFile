@@ -4,7 +4,7 @@ pipeline {
       jdk 'JDK8'
     }
     environment {
-        BRANCH_NAME = "feature/addLogging",
+        BRANCH_NAME = "feature/addLogging"
         GIT_CREDENTIALS_ID = 'git credentials'
     }
 
