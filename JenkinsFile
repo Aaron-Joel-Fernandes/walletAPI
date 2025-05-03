@@ -4,7 +4,8 @@ pipeline {
       jdk 'JDK8'
     }
     environment {
-        BRANCH_NAME = "feature/addLogging"
+        BRANCH_NAME = "feature/addLogging",
+        GIT_CREDENTIALS_ID = 'git credentials'
     }
 
     stages {
@@ -42,7 +43,7 @@ pipeline {
                 expression { BRANCH_NAME.startsWith("feature/addLogging") }
             }
             steps {
-                script {
+                 sshagent (credentials: [env.GIT_CREDENTIALS_ID]) {
                     bat """
                     git config --global user.email "fernandes.aaron1@gmail.com"
                     git config --global user.name "Aaron Joel Fernandes"
