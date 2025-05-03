@@ -51,9 +51,9 @@ pipeline {
 
                     git checkout release/1.0.0
                     git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
-                    git push -u origin release/1.0.0
+                    git push origin release/1.0.0
 
-                    git push -u origin --delete ${BRANCH_NAME}
+                    git push origin --delete ${BRANCH_NAME}
                     """
                 }
             }
@@ -68,7 +68,7 @@ pipeline {
                     bat """
                     git checkout master
                     git merge --no-ff release/1.0.0 -m "Release to master"
-                    git push -u origin master
+                    git push  origin master
                     """
                 }
             }
