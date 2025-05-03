@@ -26,12 +26,12 @@ public class WalletServiceImpl implements WalletService {
 	}
 
 	@Override
-	public WalletDto getBalance(String emailId) {
+	public WalletDto getBalance(String emailId,WalletDto wallet) {
 		logger.info("Get Wallet balance request received = {} ", emailId);
 		// Implemented
 		PaymentTransactionDto transaction= new PaymentTransactionDto();
 		transaction.setEmailId(emailId);
-
+		transaction.setWalletDto(wallet);
 		return transaction.getWalletDto();
 	}
 
