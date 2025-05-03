@@ -40,8 +40,6 @@ pipeline {
             steps {
                 script {
                     sh """
-
-
                     git checkout release/1.0.0
                     git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
                     git push origin release/1.0.0
