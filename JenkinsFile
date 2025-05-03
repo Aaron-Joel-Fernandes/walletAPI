@@ -44,6 +44,8 @@ pipeline {
             steps {
                 script {
                     bat """
+                    git config --global user.email "fernandes.aaron1@gmail.com"
+                    git config --global user.name "Aaron Joel Fernandes"
                     git checkout release/1.0.0
                     git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
                     git push origin release/1.0.0
