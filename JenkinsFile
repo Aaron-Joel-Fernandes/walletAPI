@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo "Running tests on branch ${BRANCH_NAME}"
                 bat 'mvn clean install'
-                bat 'mvn run tests'
+                bat 'mvn tests'
             }
         }
 
