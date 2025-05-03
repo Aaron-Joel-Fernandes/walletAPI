@@ -33,7 +33,7 @@ pipeline {
                 echo "Deploying ${BRANCH_NAME} to DEV environment"
                 // Simulate deployment
                 //sh './deploy.sh dev'  // Replace with your actual deployment command
-                bat 'mvn deploy'
+                bat 'mvn clean deploy -DskipTests=true'
             }
         }
 
