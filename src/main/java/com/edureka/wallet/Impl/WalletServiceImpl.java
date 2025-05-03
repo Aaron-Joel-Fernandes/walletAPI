@@ -1,5 +1,6 @@
 package com.edureka.wallet.Impl;
 
+import com.edureka.wallet.utils.LoggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,23 +21,24 @@ public class WalletServiceImpl implements WalletService {
 
 	@Override
 	public WalletDto doTransaction(PaymentTransactionDto transaction) {
-		logger.info("Transaction request received = {} ", transaction);
+		LoggerUtil.logInfo("Transaction request received = {} "+transaction);
 		// Implemented
 		return transaction.getWalletDto();
 	}
 
 	@Override
-	public WalletDto getBalance(String emailId) {
-		logger.info("Get Wallet balance request received = {} ", emailId);
+	public WalletDto getBalance(String emailId,WalletDto wallet) {
+		LoggerUtil.logInfo("Get Wallet balance request received = {} "+emailId);
 		// Implemented
 		PaymentTransactionDto transaction= new PaymentTransactionDto();
 		transaction.setEmailId(emailId);
-
+		transaction.setWalletDto(wallet);
 		return transaction.getWalletDto();
 	}
 
 	@Override
 	public WalletDto addWallet(WalletDto walletDto) {
+		LoggerUtil.logInfo("Entering the add wallet code = {} ");
 		walletDto.setWalletId(UUID.randomUUID().toString());
 		walletMap.put(walletDto.getWalletId(), walletDto);
 		return walletDto;
@@ -44,6 +46,7 @@ public class WalletServiceImpl implements WalletService {
 
 	@Override
 	public WalletDto updateWallet(String id, WalletDto walletDto) {
+		LoggerUtil.logInfo("Entering the update wallet code = {} ");
 		WalletDto wallet = walletMap.get(id);
 		if (wallet != null) {
 			wallet.setBalance(walletDto.getBalance());

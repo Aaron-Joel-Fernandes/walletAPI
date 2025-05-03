@@ -8,7 +8,7 @@ public interface WalletService {
 
 	WalletDto doTransaction(PaymentTransactionDto transaction);
 
-	WalletDto getBalance(String emailId);
+	WalletDto getBalance(String emailId,WalletDto wallet);
 
 	WalletDto addWallet(WalletDto walletDto);
 	WalletDto updateWallet(String id, WalletDto walletDto);

@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+    tools {
+      jdk 'JDK8'
+    }
+    environment {
+        BRANCH_NAME = "feature/addLogging"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build & Test') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/addLogging") }
+            }
+            steps {
+                echo "Running tests on branch ${BRANCH_NAME}"
+                bat 'mvn clean install'
+                bat 'mvn test'
+            }
+        }
+
+        stage('Deploy to Dev') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/addLogging") }
+            }
+            steps {
+                echo "Deploying ${BRANCH_NAME} to DEV environment"
+                // Simulate deployment
+                //sh './deploy.sh dev'  // Replace with your actual deployment command
+                //bat 'mvn clean deploy -DskipTests=true'
+            }
+        }
+
+        stage('Merge to Release') {
+            when {
+                expression { BRANCH_NAME.startsWith("feature/addLogging") }
+            }
+            steps {
+                script {
+                    bat """
+                    git config --global user.email "fernandes.aaron1@gmail.com"
+                    git config --global user.name "Aaron Joel Fernandes"
+                    git checkout release/1.0.0
+                    git merge --no-ff origin/${BRANCH_NAME} -m "Merge ${BRANCH_NAME} into release"
+                    git push origin release/1.0.0
+
+                    git push origin --delete ${BRANCH_NAME}
+                    """
+                }
+            }
+        }
+
+        stage('Merge Release to Master') {
+            when {
+                expression { BRANCH_NAME == 'release/1.0.0' }
+            }
+            steps {
+                script {
+                    bat """
+                    git checkout master
+                    git merge --no-ff release/1.0.0 -m "Release to master"
+                    git push origin master
+                    """
+                }
+            }
+        }
+    }
+}
