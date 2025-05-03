@@ -14,6 +14,25 @@ public class WalletDto implements Serializable {
 
 	private Float nonRefundableDebit;
 
+	private String walletId;
+	private  float  balance;
+
+	public String getWalletId() {
+		return walletId;
+	}
+
+	public void setWalletId(String walletId) {
+		this.walletId = walletId;
+	}
+
+	public float getBalance() {
+		return balance;
+	}
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+
 	public Float getRefundableCredit() {
 		return refundableCredit;
 	}
