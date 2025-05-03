@@ -4,7 +4,7 @@ pipeline {
       jdk 'JDK8'
     }
     environment {
-        BRANCH_NAME = "feature/"
+        BRANCH_NAME = "feature/addLogging"
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
 
         stage('Build & Test') {
             when {
-                expression { BRANCH_NAME.startsWith("feature/") }
+                expression { BRANCH_NAME.startsWith("feature/addLogging") }
             }
             steps {
                 echo "Running tests on branch ${BRANCH_NAME}"
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Deploy to Dev') {
             when {
-                expression { BRANCH_NAME.startsWith("feature/") }
+                expression { BRANCH_NAME.startsWith("feature/addLogging") }
             }
             steps {
                 echo "Deploying ${BRANCH_NAME} to DEV environment"
@@ -39,7 +39,7 @@ pipeline {
 
         stage('Merge to Release') {
             when {
-                expression { BRANCH_NAME.startsWith("feature/") }
+                expression { BRANCH_NAME.startsWith("feature/addLogging") }
             }
             steps {
                 script {
